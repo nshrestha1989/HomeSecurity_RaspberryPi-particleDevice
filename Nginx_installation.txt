@@ -1,0 +1,16 @@
+At this point we have working web app to stream live video on local network 
+
+to stream online globally we are going to use Nginx.
+
+it is not install on raspberry pi by default 
+
+in terminal-->type-->sudo apt install nginx
+		 --> type cd  /etc/nginx/sites-available	
+		--> sudo nano default
+		--> proxy pass htpp://localhost:5000/index.html
+
+in order for our website to be availabe to outside world we need our ip address
+-->google what is my IP address and it will come up
+--> noip.com -> create hostname
+-->go to router-->portforward to local raspberry pi IP addresss
+
