@@ -1,0 +1,12 @@
+
+Home security program will start running at the boot or when the Pi restart due to power failure
+
+Start Raspberry Pi python code when it reboots or start up
+Raspberry pi ->terminal-> sudo corntab -e -> @reboot python3 /home/pi/PI/homesecurity.py &
+Start NGinx web server when it reboots or start up
+NGinx web server ->sudo systemctl enable nginx
+
+
+
+
+

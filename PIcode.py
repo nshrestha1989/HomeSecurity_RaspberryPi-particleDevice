@@ -85,9 +85,13 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 def capture_video():
     now = datetime.now().time()
     current_time = now.strftime("%H:%M:%S")
-    camera.start_recording(current_time+'.h264', splitter_port=2)
-    camera.wait_recording(10)
-    camera.stop_recording(splitter_port=2)
+     try:
+        camera.start_recording(current_time+'.h264', splitter_port=2)
+        camera.wait_recording(10)
+     except Exception as e:
+                print("An Exception occured:",e)
+     finally :
+        camera.stop_recording(splitter_port=2)
     
 with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
     server = StreamingServer(('0.0.0.0', 5000), StreamingHandler)
@@ -97,20 +101,26 @@ with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
     
     camera.start_recording(output, format='mjpeg')
    
+    
+   
     try:
          server_thread.start()
          while True:
-            x=requests.get('https://api.particle.io/v1/devices/e00fce68753ae072c0393443/motion?access_token=f0ce42eb5028ceb660f3d3b391897c654606a06e')
-            x.raise_for_status()
-            data = x.json()
-            print(data['result'])
-            now = datetime.now().time()
-            current_time = now.strftime("%H:%M:%S")
-            if (data['result']==True):
-                    print("Motion Detected")
-                    capture_video()
-                    
+            try:
+                x=requests.get('https://api.particle.io/v1/devices/e00fce68753ae072c0393443/motion?access_token=167b5f0c1b5c67677a1a35f1701e7a2fa56b8a66')
+                x.raise_for_status()
+                data = x.json()
+                print(data['result'])
+                now = datetime.now().time()
+                current_time = now.strftime("%H:%M:%S")
+                if (data['result']==True):
+                        print("Motion Detected")
+                        capture_video()
+            except Exception as e:
+                print("An Exception occured:",e)
          
             
     finally :
           camera.stop_recording()
+
+
